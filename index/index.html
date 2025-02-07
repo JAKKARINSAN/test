@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch API Data</title>
+</head>
+<body>
+    <h2>API Response</h2>
+    <button onclick="fetchData()">Get Bill Status</button>
+    <pre id="output"></pre>
+
+    <script>
+        async function fetchData() {
+            const url = "https://mrm.pea.co.th/5_1.aspx/GetMeterReadingStat";
+            const requestData = {mru: 'DNKL0044',ca: '020027255376',deviceNo: '6500490154'};
+
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                
+                const data = await response.json();
+                document.getElementById("output").textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById("output").textContent = "Error: " + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
